@@ -18,7 +18,7 @@ function App() {
     document.title = "MY BEST TOURS AND TRAVEL";
     const link = document.createElement('link');
     link.rel = 'icon';
-    link.href = '/icon.svg';
+    link.href = 'https://cdn-icons-png.flaticon.com/512/5086/5086786.png';
     document.head.appendChild(link);
   }, []);
 
