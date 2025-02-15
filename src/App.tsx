@@ -295,25 +295,41 @@ function App() {
   ></div>
   <div className="absolute inset-0 bg-white/80"></div>
 
-  {/* Content - Keeping your existing structure */}
+  {/* Content */}
   <div className="relative z-10 max-w-7xl mx-auto px-4">
     <h2 className="text-4xl font-bold text-center mb-12">About Us</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-      <div className="space-y-6">
-        <div className="bg-white p-4 rounded-lg shadow-lg">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+      {/* Left Column */}
+      <div className="flex flex-col space-y-6 h-full">
+        <div className="bg-white p-6 rounded-lg shadow-lg flex-grow">
           <img 
             src={img} 
             alt="About Us" 
-            className="rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300"
+            className="rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 w-full h-auto"
           />
         </div>
         <div className="grid grid-cols-2 gap-4">
           <AnimatedCounter end={13} label="Years Experience" />
           <AnimatedCounter end={10000} label="Happy Travelers" duration={2500} />
         </div>
+        <button 
+          className="bg-gradient-to-r from-orange-600 to-orange-800 hover:from-orange-700 hover:to-orange-900 text-white px-8 py-4 rounded-lg text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2"
+          onClick={() => window.open('/company-profile.pdf', '_blank')}
+        >
+          <svg 
+            className="w-5 h-5" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Company Profile
+        </button>
       </div>
-      
-      <div className="space-y-8">
+
+      {/* Right Column */}
+      <div className="flex flex-col space-y-8 h-full">
         <div className="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
           <h3 className="text-2xl font-semibold mb-4">Your Gateway to Malaysian Adventures</h3>
           <p className="text-gray-600 mb-6 leading-relaxed">
