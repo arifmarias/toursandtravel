@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Menu, X, Clock, MapPin, Star, AlertCircle, ChevronRight, Phone } from 'lucide-react';
 import { tourData } from '../data/tourData';
-
+import * as logo from '/assets/logo.png';
+const img = logo.default;
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -13,7 +14,7 @@ const Navigation = () => {
           <div className="flex items-center space-x-4">
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/assets/logo.png"
+                src={img}
                 alt="Logo" 
                 className="h-8 w-8 md:h-10 md:w-10 rounded-full" 
               />
