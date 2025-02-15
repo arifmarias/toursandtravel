@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Palmtree as PalmTree, Phone, Mail, MapPin, Facebook, Instagram, Twitter, Star, Users, Calendar, Clock, Check } from 'lucide-react';
 import * as logo from '/assets/logo.png';
-import TourDetailPage from './pages/TourDetailPage'; // Import the TourDetailPage component
+import TourDetailPage from './pages/TourDetailPage';
+import AnimatedCounter from './components/AnimatedCounter';
 
 
 function App() {
@@ -147,6 +148,10 @@ function App() {
     return () => clearInterval(tourImageTimer);
   }, [tourImageUrls.length]);
     return (
+      <Router>
+      <Routes>
+        <Route path="/tour/:id" element={<TourDetailPage />} />
+        <Route path="/" element={
       <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="fixed w-full bg-white/90 backdrop-blur-sm z-50 shadow-sm">
@@ -280,202 +285,369 @@ function App() {
         </div>
       </section>
             {/* About Section */}
-      <section id="about" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">About Us</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <img 
-                src={img} 
-                alt="About Us" 
-                className="rounded-lg shadow-lg"
-              />
-            </div>
-            <div>
-              <h3 className="text-2xl font-semibold mb-4">Your Gateway to Malaysian Adventures</h3>
-              <p className="text-gray-600 mb-6">
-                Since our establishment, MY BEST TOURS AND TRAVEL has been dedicated to providing exceptional travel experiences across Malaysia. Our team of experienced travel professionals combines local expertise with international standards to create unforgettable journeys.
-              </p>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="flex items-center space-x-2">
-                  <Users className="h-6 w-6 text-blue-600" />
-                  <span>Expert Guides</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Calendar className="h-6 w-6 text-blue-600" />
-                  <span>Flexible Tours</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Clock className="h-6 w-6 text-blue-600" />
-                  <span>24/7 Support</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Star className="h-6 w-6 text-blue-600" />
-                  <span>Best Value</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-            {/* Popular Tours Section */}
-      <section id="tours" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">Popular Tour Packages</h2>
-          
-          <h3 className="text-2xl font-semibold mb-6">Local Tours</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {localTours.map((tour, index) => (
-              <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
-                <img src={tour.image} alt={tour.title} className="w-full h-48 object-cover" />
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{tour.title}</h3>
-                  <p className="text-gray-600 mb-4">{tour.duration}</p>
-                  <div className="space-y-2 mb-4">
-                    {tour.highlights.map((highlight, idx) => (
-                      <div key={idx} className="flex items-center text-sm text-gray-600">
-                        <Star className="h-4 w-4 text-orange-500 mr-2" />
-                        <span>{highlight}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <button className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
-                    Learn More
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+            <section id="about" className="py-20 relative">
+  {/* Background layers */}
+  <div 
+    className="absolute inset-0 bg-cover bg-center bg-fixed"
+    style={{
+      backgroundImage: "url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')"
+    }}
+  ></div>
+  <div className="absolute inset-0 bg-white/80"></div>
 
-          <h3 className="text-2xl font-semibold mb-6">International Tours</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {internationalTours.map((tour, index) => (
-              <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
-                <img src={tour.image} alt={tour.title} className="w-full h-48 object-cover" />
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{tour.title}</h3>
-                  <p className="text-gray-600 mb-4">{tour.duration}</p>
-                  <div className="space-y-2 mb-4">
-                    {tour.highlights.map((highlight, idx) => (
-                      <div key={idx} className="flex items-center text-sm text-gray-600">
-                        <Star className="h-4 w-4 text-orange-500 mr-2" />
-                        <span>{highlight}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="space-y-2 mb-4">
-                    <h4 className="text-lg font-semibold">Included Services:</h4>
-                    {tour.services.map((service, idx) => (
-                      <div key={idx} className="flex items-center text-sm text-gray-600">
-                        <Check className="h-4 w-4 text-green-500 mr-2" />
-                        <span>{service}</span>
-                      </div>
-                    ))}
-                  </div>
-                  <button className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
-                    Learn More
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+  {/* Content - Keeping your existing structure */}
+  <div className="relative z-10 max-w-7xl mx-auto px-4">
+    <h2 className="text-4xl font-bold text-center mb-12">About Us</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <div className="space-y-6">
+        <div className="bg-white p-4 rounded-lg shadow-lg">
+          <img 
+            src={img} 
+            alt="About Us" 
+            className="rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300"
+          />
         </div>
-      </section>
-            {/* Transportation Section */}
-      <section id="transportation" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">Transportation</h2>
-          <p className="text-center text-gray-600 mb-8">
-            We offer a variety of transportation options to make your travel experience seamless and comfortable.
+        <div className="grid grid-cols-2 gap-4">
+          <AnimatedCounter end={13} label="Years Experience" />
+          <AnimatedCounter end={10000} label="Happy Travelers" duration={2500} />
+        </div>
+      </div>
+      
+      <div className="space-y-8">
+        <div className="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
+          <h3 className="text-2xl font-semibold mb-4">Your Gateway to Malaysian Adventures</h3>
+          <p className="text-gray-600 mb-6 leading-relaxed">
+            Since 2010, MY BEST TOURS AND TRAVEL has been crafting exceptional travel experiences across Malaysia and Southeast Asia. Our journey began with a simple mission: to share the authentic beauty, rich culture, and hidden gems of our region with travelers from around the world.
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-4">Airport Transfers</h3>
-              <p className="text-gray-600">Convenient and reliable airport transfers to and from your destination.</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-4">Private Car Rentals</h3>
-              <p className="text-gray-600">Explore at your own pace with our private car rental services.</p>
-            </div>
-            <div className="bg-white p-6 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold mb-4">Group Transportation</h3>
-              <p className="text-gray-600">Comfortable and affordable transportation for groups of all sizes.</p>
+          <p className="text-gray-600 mb-6 leading-relaxed">
+            What sets us apart is our deep local expertise combined with international service standards. Our team of passionate travel professionals has intimate knowledge of every destination we serve, ensuring you experience not just the tourist highlights, but also the authentic local experiences that make your journey truly memorable.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-6">
+          <div className="flex items-center space-x-3 bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+            <Users className="h-8 w-8 text-blue-600" />
+            <div>
+              <h4 className="font-semibold">Expert Guides</h4>
+              <p className="text-sm text-gray-600">Locally certified professionals</p>
             </div>
           </div>
-          <div className="mt-12">
-            <h3 className="text-2xl font-semibold mb-6">Our Fleet</h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              <div className="bg-white p-6 rounded-lg shadow-lg">
-                <img src="https://images.unsplash.com/photo-1616455579100-2ceaa4eb2d37?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sedan" className="w-full h-48 object-cover mb-4 rounded-lg" />
-                <h4 className="text-xl font-semibold mb-2">Sedan</h4>
-                <p className="text-gray-600">Comfortable for up to 4 passengers.</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-lg">
-                <img src="https://images.unsplash.com/photo-1606611013016-969c19ba27bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="SUV" className="w-full h-48 object-cover mb-4 rounded-lg" />
-                <h4 className="text-xl font-semibold mb-2">SUV</h4>
-                <p className="text-gray-600">Spacious and comfortable for up to 6 passengers.</p>
-              </div>
-              <div className="bg-white p-6 rounded-lg shadow-lg">
-                <img src="https://images.unsplash.com/photo-1535655685871-dc8158ff167e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Van" className="w-full h-48 object-cover mb-4 rounded-lg" />
-                <h4 className="text-xl font-semibold mb-2">Van</h4>
-                <p className="text-gray-600">Ideal for groups of up to 12 passengers.</p>
-              </div>
+          <div className="flex items-center space-x-3 bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+            <Calendar className="h-8 w-8 text-blue-600" />
+            <div>
+              <h4 className="font-semibold">Flexible Tours</h4>
+              <p className="text-sm text-gray-600">Customized to your needs</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3 bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+            <Clock className="h-8 w-8 text-blue-600" />
+            <div>
+              <h4 className="font-semibold">24/7 Support</h4>
+              <p className="text-sm text-gray-600">Always here to help</p>
+            </div>
+          </div>
+          <div className="flex items-center space-x-3 bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-all duration-300 transform hover:-translate-y-1">
+            <Star className="h-8 w-8 text-blue-600" />
+            <div>
+              <h4 className="font-semibold">Best Value</h4>
+              <p className="text-sm text-gray-600">Quality at fair prices</p>
             </div>
           </div>
         </div>
-      </section>
-            {/* Recent Tours Image Carousel */}
-          <section id="recent-tours" className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4">
-            <h2 className="text-4xl font-bold text-center mb-12">Recent Tours</h2>
-            <div className="relative w-full h-[600px] overflow-hidden rounded-xl shadow-2xl">
-            {tourImageUrls.map((url, index) => (
-              <div
-              key={index}
-              className={`absolute inset-0 transition-opacity duration-1000 ${
-                currentTourImageIndex === index ? 'opacity-100' : 'opacity-0'
-              }`}
-              >
-              <img 
-                src={url}
-                alt={`Tour ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-              </div>
-            ))}
-            
-            {/* Left Arrow */}
-            <button 
-              onClick={() => setCurrentTourImageIndex(prev => 
-              prev === 0 ? tourImageUrls.length - 1 : prev - 1
-              )}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-black/70 transition-colors"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
 
-            {/* Right Arrow */}
-            <button 
-              onClick={() => setCurrentTourImageIndex(prev => 
-              prev === tourImageUrls.length - 1 ? 0 : prev + 1
-              )}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-black/70 transition-colors"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </button>
+        <div className="bg-blue-50 p-6 rounded-lg border border-blue-100 shadow-lg hover:shadow-xl transition-shadow duration-300">
+          <h4 className="text-lg font-semibold mb-2">Our Commitment</h4>
+          <ul className="space-y-2">
+            <li className="flex items-start space-x-2">
+              <Check className="h-5 w-5 text-blue-600 mt-1" />
+              <span className="text-gray-700">Sustainable and responsible tourism practices</span>
+            </li>
+            <li className="flex items-start space-x-2">
+              <Check className="h-5 w-5 text-blue-600 mt-1" />
+              <span className="text-gray-700">Support for local communities and businesses</span>
+            </li>
+            <li className="flex items-start space-x-2">
+              <Check className="h-5 w-5 text-blue-600 mt-1" />
+              <span className="text-gray-700">Authentic cultural experiences and exchanges</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+            {/* Popular Tours Section */}
+            <section id="tours" className="py-20 relative">
+  {/* Background layers */}
+  <div 
+    className="absolute inset-0 bg-cover bg-center bg-fixed"
+    style={{
+      backgroundImage: "url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')"
+    }}
+  ></div>
+  <div className="absolute inset-0 bg-white/80"></div>
 
-            {/* Image Counter */}
-            <div className="absolute bottom-6 right-6 bg-black/60 px-4 py-2 rounded-full text-white font-semibold text-lg">
-              {currentTourImageIndex + 1} / {tourImageUrls.length}
+  {/* Content */}
+  <div className="relative z-10 max-w-7xl mx-auto px-4">
+    <h2 className="text-4xl font-bold text-center mb-12">Popular Tour Packages</h2>
+    
+    <h3 className="text-2xl font-semibold mb-6">Local Tours</h3>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+      {localTours.map((tour, index) => (
+        <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
+          <img src={tour.image} alt={tour.title} className="w-full h-48 object-cover" />
+          <div className="p-6">
+            <h3 className="text-xl font-semibold mb-2">{tour.title}</h3>
+            <p className="text-gray-600 mb-4">{tour.duration}</p>
+            <div className="space-y-2 mb-4">
+              {tour.highlights.map((highlight, idx) => (
+                <div key={idx} className="flex items-center text-sm text-gray-600">
+                  <Star className="h-4 w-4 text-orange-500 mr-2" />
+                  <span>{highlight}</span>
+                </div>
+              ))}
             </div>
-            </div>
+            <Link 
+              to={`/tour/${tour.title.toLowerCase().replace(/\s+/g, '-')}`}
+              className="block w-full bg-blue-600 text-white text-center px-4 py-2 rounded hover:bg-blue-700 transition duration-300"
+            >
+              Learn More
+            </Link>
           </div>
-          </section>
+        </div>
+      ))}
+    </div>
+
+    <h3 className="text-2xl font-semibold mb-6">International Tours</h3>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {internationalTours.map((tour, index) => (
+        <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
+          <img src={tour.image} alt={tour.title} className="w-full h-48 object-cover" />
+          <div className="p-6">
+            <h3 className="text-xl font-semibold mb-2">{tour.title}</h3>
+            <p className="text-gray-600 mb-4">{tour.duration}</p>
+            <div className="space-y-2 mb-4">
+              {tour.highlights.map((highlight, idx) => (
+                <div key={idx} className="flex items-center text-sm text-gray-600">
+                  <Star className="h-4 w-4 text-orange-500 mr-2" />
+                  <span>{highlight}</span>
+                </div>
+              ))}
+            </div>
+            <div className="space-y-2 mb-4">
+              <h4 className="text-lg font-semibold">Included Services:</h4>
+              {tour.services.map((service, idx) => (
+                <div key={idx} className="flex items-center text-sm text-gray-600">
+                  <Check className="h-4 w-4 text-green-500 mr-2" />
+                  <span>{service}</span>
+                </div>
+              ))}
+            </div>
+            <Link 
+              to={`/tour/${tour.title.toLowerCase().replace(/\s+/g, '-')}`}
+              className="block w-full bg-blue-600 text-white text-center px-4 py-2 rounded hover:bg-blue-700 transition duration-300"
+            >
+              Learn More
+            </Link>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+            {/* Transportation Section */}
+            <section id="transportation" className="py-20 relative">
+  {/* Background layers */}
+  <div 
+    className="absolute inset-0 bg-cover bg-center bg-fixed"
+    style={{
+      backgroundImage: "url('https://images.unsplash.com/photo-1570125909232-eb263c188f7e?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')"
+    }}
+  ></div>
+  <div className="absolute inset-0 bg-white/80"></div>
+
+  {/* Content */}
+  <div className="relative z-10 max-w-7xl mx-auto px-4">
+    <h2 className="text-4xl font-bold text-center mb-12">Transportation</h2>
+    <p className="text-center text-gray-600 mb-8">
+      We offer a variety of transportation options to make your travel experience seamless and comfortable.
+    </p>
+    
+    {/* Service Cards */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+        <h3 className="text-xl font-semibold mb-4">Airport Transfers</h3>
+        <p className="text-gray-600">Convenient and reliable airport transfers to and from your destination.</p>
+      </div>
+      <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+        <h3 className="text-xl font-semibold mb-4">Private Car Rentals</h3>
+        <p className="text-gray-600">Explore at your own pace with our private car rental services.</p>
+      </div>
+      <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+        <h3 className="text-xl font-semibold mb-4">Group Transportation</h3>
+        <p className="text-gray-600">Comfortable and affordable transportation for groups of all sizes.</p>
+      </div>
+    </div>
+
+    {/* Fleet Section */}
+    <div className="mt-12">
+      <h3 className="text-2xl font-semibold mb-6">Our Fleet</h3>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+          <img 
+            src="https://images.unsplash.com/photo-1616455579100-2ceaa4eb2d37?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+            alt="Sedan" 
+            className="w-full h-48 object-cover mb-4 rounded-lg"
+          />
+          <h4 className="text-xl font-semibold mb-2">Sedan</h4>
+          <p className="text-gray-600">Comfortable for up to 4 passengers.</p>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+          <img 
+            src="https://images.unsplash.com/photo-1606611013016-969c19ba27bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+            alt="SUV" 
+            className="w-full h-48 object-cover mb-4 rounded-lg"
+          />
+          <h4 className="text-xl font-semibold mb-2">SUV</h4>
+          <p className="text-gray-600">Spacious and comfortable for up to 6 passengers.</p>
+        </div>
+        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition duration-300">
+          <img 
+            src="https://images.unsplash.com/photo-1535655685871-dc8158ff167e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+            alt="Van" 
+            className="w-full h-48 object-cover mb-4 rounded-lg"
+          />
+          <h4 className="text-xl font-semibold mb-2">Van</h4>
+          <p className="text-gray-600">Ideal for groups of up to 12 passengers.</p>
+        </div>
+      </div>
+    </div>
+
+    {/* Added Features */}
+    <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h3 className="text-xl font-semibold mb-4">Additional Services</h3>
+        <ul className="space-y-3">
+          <li className="flex items-center text-gray-600">
+            <Check className="h-5 w-5 text-green-500 mr-2" />
+            Professional, licensed drivers
+          </li>
+          <li className="flex items-center text-gray-600">
+            <Check className="h-5 w-5 text-green-500 mr-2" />
+            24/7 customer support
+          </li>
+          <li className="flex items-center text-gray-600">
+            <Check className="h-5 w-5 text-green-500 mr-2" />
+            Flight tracking and wait time included
+          </li>
+          <li className="flex items-center text-gray-600">
+            <Check className="h-5 w-5 text-green-500 mr-2" />
+            Meet and greet service available
+          </li>
+        </ul>
+      </div>
+      <div className="bg-white p-6 rounded-lg shadow-lg">
+        <h3 className="text-xl font-semibold mb-4">Vehicle Features</h3>
+        <ul className="space-y-3">
+          <li className="flex items-center text-gray-600">
+            <Check className="h-5 w-5 text-green-500 mr-2" />
+            Air-conditioned vehicles
+          </li>
+          <li className="flex items-center text-gray-600">
+            <Check className="h-5 w-5 text-green-500 mr-2" />
+            Regular maintenance and cleaning
+          </li>
+          <li className="flex items-center text-gray-600">
+            <Check className="h-5 w-5 text-green-500 mr-2" />
+            GPS navigation system
+          </li>
+          <li className="flex items-center text-gray-600">
+            <Check className="h-5 w-5 text-green-500 mr-2" />
+            Complimentary bottled water
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+            {/* Recent Tours Image Carousel */}
+            <section id="recent-tours" className="py-20 relative">
+  {/* Background layers */}
+  <div 
+    className="absolute inset-0 bg-cover bg-center bg-fixed"
+    style={{
+      backgroundImage: "url('https://images.unsplash.com/photo-1506929562872-bb421503ef21?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80')"
+    }}
+  ></div>
+  <div className="absolute inset-0 bg-white/80"></div>
+
+  {/* Content */}
+  <div className="relative z-10 max-w-7xl mx-auto px-4">
+    <h2 className="text-4xl font-bold text-center mb-12">Recent Tours</h2>
+    <div className="relative w-full h-[600px] overflow-hidden rounded-xl shadow-2xl bg-white">
+      {tourImageUrls.map((url, index) => (
+        <div
+          key={index}
+          className={`absolute inset-0 transition-opacity duration-1000 ${
+            currentTourImageIndex === index ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <img 
+            src={url}
+            alt={`Tour ${index + 1}`}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+        </div>
+      ))}
+      
+      {/* Left Arrow */}
+      <button 
+        onClick={() => setCurrentTourImageIndex(prev => 
+          prev === 0 ? tourImageUrls.length - 1 : prev - 1
+        )}
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-black/70 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
+      {/* Right Arrow */}
+      <button 
+        onClick={() => setCurrentTourImageIndex(prev => 
+          prev === tourImageUrls.length - 1 ? 0 : prev + 1
+        )}
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-black/70 transition-all duration-300 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-white/50"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+        </svg>
+      </button>
+
+      {/* Progress Indicator */}
+      <div className="absolute bottom-6 right-6 bg-black/60 px-4 py-2 rounded-full text-white font-semibold text-lg">
+        {currentTourImageIndex + 1} / {tourImageUrls.length}
+      </div>
+
+      {/* Image Dots Navigation */}
+      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {tourImageUrls.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => setCurrentTourImageIndex(index)}
+            className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              currentTourImageIndex === index 
+                ? 'bg-white scale-110' 
+                : 'bg-white/50 hover:bg-white/75'
+            }`}
+            aria-label={`Go to image ${index + 1}`}
+          />
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
             {/* Inquiry Form Section */}
       <section id="inquiry" className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
@@ -685,7 +857,11 @@ function App() {
               </div>
             </footer>
           </div>
-        );
-      }
+        } 
+        />
+      </Routes>
+    </Router>
+  );
+}
       
       export default App;
