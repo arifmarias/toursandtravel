@@ -403,7 +403,7 @@ function App() {
     }}
   ></div>
   <div className="absolute inset-0 bg-white/80"></div>
-  <Analytics />
+    
   {/* Content */}
   <div className="relative z-10 max-w-7xl mx-auto px-4">
     <h2 className="text-4xl font-bold text-center mb-12">Popular Tour Packages</h2>
