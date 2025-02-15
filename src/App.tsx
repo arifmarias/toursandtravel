@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Palmtree as PalmTree, Phone, Mail, MapPin, Facebook, Instagram, Twitter, MapIcon as WhatsappIcon, Star, Users, Calendar, Clock, Check } from 'lucide-react';
+import { Palmtree as PalmTree, Phone, Mail, MapPin, Facebook, Instagram, Twitter, Star, Users, Calendar, Clock, Check } from 'lucide-react';
 import * as logo from '/assets/logo.png';
+
 function App() {
   const [showCookieConsent, setShowCookieConsent] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -23,8 +24,7 @@ function App() {
     link.href = 'https://cdn-icons-png.flaticon.com/512/5086/5086786.png';
     document.head.appendChild(link);
   }, []);
-
-  const heroImages = [
+    const heroImages = [
     {
       url: "https://images.unsplash.com/photo-1438159510492-d44b489bd1b6?ixlib=rb-4.0.3&auto=format&fit=crop&w=2000&q=80",
       caption: "Discover Langkawi's Paradise"
@@ -52,21 +52,19 @@ function App() {
 
     return () => clearInterval(timer);
   }, []);
-
-  const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Form submitted:', formData);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
+    const { name: inputName, value } = e.target;
     setFormData(prev => ({
       ...prev,
-      [name]: value
+      [inputName]: value
     }));
   };
-
-  const localTours = [
+    const localTours = [
     {
       title: "Kuala Lumpur City Explorer",
       image: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
@@ -128,8 +126,22 @@ function App() {
       services: ["Visa", "Flights", "Hotels"]
     }
   ];
+    // Dynamically import all images from the assets/tours folder
+  const tourImages = import.meta.glob('/assets/tours/*.jpeg', { eager: true });
+  const tourImageUrls = Object.values(tourImages).map((module: any) => module.default);
 
-  return (
+  const [currentTourImageIndex, setCurrentTourImageIndex] = useState(0);
+
+  useEffect(() => {
+    const tourImageTimer = setInterval(() => {
+      setCurrentTourImageIndex((prevIndex) =>
+        prevIndex === tourImageUrls.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 3000);
+
+    return () => clearInterval(tourImageTimer);
+  }, [tourImageUrls.length]);
+    return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="fixed w-full bg-white/90 backdrop-blur-sm z-50 shadow-sm">
@@ -203,8 +215,7 @@ function App() {
           ))}
         </div>
       </section>
-
-      {/* About Section */}
+            {/* About Section */}
       <section id="about" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">About Us</h2>
@@ -243,8 +254,7 @@ function App() {
           </div>
         </div>
       </section>
-
-      {/* Popular Tours Section */}
+            {/* Popular Tours Section */}
       <section id="tours" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">Popular Tour Packages</h2>
@@ -307,8 +317,7 @@ function App() {
           </div>
         </div>
       </section>
-
-      {/* Transportation Section */}
+            {/* Transportation Section */}
       <section id="transportation" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">Transportation</h2>
@@ -351,8 +360,59 @@ function App() {
           </div>
         </div>
       </section>
+            {/* Recent Tours Image Carousel */}
+          <section id="recent-tours" className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4">
+            <h2 className="text-4xl font-bold text-center mb-12">Recent Tours</h2>
+            <div className="relative w-full h-[600px] overflow-hidden rounded-xl shadow-2xl">
+            {tourImageUrls.map((url, index) => (
+              <div
+              key={index}
+              className={`absolute inset-0 transition-opacity duration-1000 ${
+                currentTourImageIndex === index ? 'opacity-100' : 'opacity-0'
+              }`}
+              >
+              <img 
+                src={url}
+                alt={`Tour ${index + 1}`}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+              </div>
+            ))}
+            
+            {/* Left Arrow */}
+            <button 
+              onClick={() => setCurrentTourImageIndex(prev => 
+              prev === 0 ? tourImageUrls.length - 1 : prev - 1
+              )}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-black/70 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
 
-      {/* Inquiry Form Section */}
+            {/* Right Arrow */}
+            <button 
+              onClick={() => setCurrentTourImageIndex(prev => 
+              prev === tourImageUrls.length - 1 ? 0 : prev + 1
+              )}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/50 p-3 rounded-full hover:bg-black/70 transition-colors"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            {/* Image Counter */}
+            <div className="absolute bottom-6 right-6 bg-black/60 px-4 py-2 rounded-full text-white font-semibold text-lg">
+              {currentTourImageIndex + 1} / {tourImageUrls.length}
+            </div>
+            </div>
+          </div>
+          </section>
+            {/* Inquiry Form Section */}
       <section id="inquiry" className="py-20 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">Plan Your Trip</h2>
@@ -463,106 +523,105 @@ function App() {
           </form>
         </div>
       </section>
-
-      {/* WhatsApp Button */}
-      <a
-        href="https://wa.me/60169777761"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-300 z-50"
-      >
-        <img 
-          src="https://static-00.iconduck.com/assets.00/whatsapp-icon-1020x1024-iykox85t.png" 
-          alt="WhatsApp"
-          className="h-6 w-6"
-        />
-      </a>
-
-      {/* Cookie Consent */}
-      {showCookieConsent && (
-        <div className="fixed bottom-0 w-full bg-gray-900 text-white py-4 px-4 z-50">
-          <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm mb-4 md:mb-0">
-              We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
-            </p>
-            <div className="flex space-x-4">
-              <button
-                onClick={() => setShowCookieConsent(false)}
-                className="bg-blue-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-blue-700 transition duration-300"
-              >
-                Accept
-              </button>
-              <button
-                onClick={() => setShowCookieConsent(false)}
-                className="border border-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition duration-300"
-              >
-                Decline
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center mb-4">
-                <PalmTree className="h-8 w-8 text-blue-400" />
-                <span className="ml-2 text-2xl font-bold">MY BEST TOURS AND TRAVEL</span>
+                  {/* WhatsApp Button */}
+            <a
+              href="https://wa.me/60169777761"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-300 z-50"
+            >
+              <img 
+                src="https://static-00.iconduck.com/assets.00/whatsapp-icon-1020x1024-iykox85t.png" 
+                alt="WhatsApp"
+                className="h-6 w-6"
+              />
+            </a>
+      
+            {/* Cookie Consent */}
+            {showCookieConsent && (
+              <div className="fixed bottom-0 w-full bg-gray-900 text-white py-4 px-4 z-50">
+                <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center">
+                  <p className="text-sm mb-4 md:mb-0">
+                    We use cookies to enhance your experience. By continuing to visit this site you agree to our use of cookies.
+                  </p>
+                  <div className="flex space-x-4">
+                    <button
+                      onClick={() => setShowCookieConsent(false)}
+                      className="bg-blue-600 text-white px-4 py-2 rounded text-sm font-medium hover:bg-blue-700 transition duration-300"
+                    >
+                      Accept
+                    </button>
+                    <button
+                      onClick={() => setShowCookieConsent(false)}
+                      className="border border-white px-4 py-2 rounded text-sm font-medium hover:bg-gray-800 transition duration-300"
+                    >
+                      Decline
+                    </button>
+                  </div>
+                </div>
               </div>
-              <p className="text-gray-400">
-                Your trusted partner for unforgettable Malaysian adventures since 2010.
-              </p>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
-              <div className="space-y-2">
-                <p className="flex items-center">
-                  <Phone className="h-5 w-5 mr-2" />
-                  +60169777761
-                </p>
-                <p className="flex items-center">
-                  <Mail className="h-5 w-5 mr-2" />
-                  sales@besttoursandtravel.com.my
-                </p>
-                <p className="flex items-center">
-                  <MapPin className="h-5 w-5 mr-2" />
-                  Kuala Lumpur, Malaysia
-                </p>
+            )}
+      
+            {/* Footer */}
+            <footer className="bg-gray-900 text-white py-12">
+              <div className="max-w-7xl mx-auto px-4">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                  <div>
+                    <div className="flex items-center mb-4">
+                      <PalmTree className="h-8 w-8 text-blue-400" />
+                      <span className="ml-2 text-2xl font-bold">MY BEST TOURS AND TRAVEL</span>
+                    </div>
+                    <p className="text-gray-400">
+                      Your trusted partner for unforgettable Malaysian adventures since 2010.
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Contact Us</h3>
+                    <div className="space-y-2">
+                      <p className="flex items-center">
+                        <Phone className="h-5 w-5 mr-2" />
+                        +60169777761
+                      </p>
+                      <p className="flex items-center">
+                        <Mail className="h-5 w-5 mr-2" />
+                        sales@besttoursandtravel.com.my
+                      </p>
+                      <p className="flex items-center">
+                        <MapPin className="h-5 w-5 mr-2" />
+                        Kuala Lumpur, Malaysia
+                      </p>
+                    </div>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul className="space-y-2">
+                      <li><a href="#about" className="hover:text-blue-400">About Us</a></li>
+                      <li><a href="#tours" className="hover:text-blue-400">Tours</a></li>
+                      <li><a href="#inquiry" className="hover:text-blue-400">Contact</a></li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
+                    <div className="flex space-x-4">
+                      <a href="#" className="hover:text-blue-400">
+                        <Facebook className="h-6 w-6" />
+                      </a>
+                      <a href="#" className="hover:text-blue-400">
+                        <Instagram className="h-6 w-6" />
+                      </a>
+                      <a href="#" className="hover:text-blue-400">
+                        <Twitter className="h-6 w-6" />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                  <p>&copy; 2025 MY BEST TOURS & TRAVEL. All rights reserved.</p>
+                </div>
               </div>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-              <ul className="space-y-2">
-                <li><a href="#about" className="hover:text-blue-400">About Us</a></li>
-                <li><a href="#tours" className="hover:text-blue-400">Tours</a></li>
-                <li><a href="#inquiry" className="hover:text-blue-400">Contact</a></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-lg font-semibold mb-4">Follow Us</h3>
-              <div className="flex space-x-4">
-                <a href="#" className="hover:text-blue-400">
-                  <Facebook className="h-6 w-6" />
-                </a>
-                <a href="#" className="hover:text-blue-400">
-                  <Instagram className="h-6 w-6" />
-                </a>
-                <a href="#" className="hover:text-blue-400">
-                  <Twitter className="h-6 w-6" />
-                </a>
-              </div>
-            </div>
+            </footer>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 MY BEST TOURS & TRAVEL. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-}
-
-export default App;
+        );
+      }
+      
+      export default App;
