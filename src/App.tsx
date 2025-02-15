@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Palmtree as PalmTree, Phone, Mail, MapPin, Facebook, Instagram, Twitter, MapIcon as WhatsappIcon, Star, Users, Calendar, Clock } from 'lucide-react';
+import { Palmtree as PalmTree, Phone, Mail, MapPin, Facebook, Instagram, Twitter, MapIcon as WhatsappIcon, Star, Users, Calendar, Clock, Check } from 'lucide-react';
 
 function App() {
   const [showCookieConsent, setShowCookieConsent] = useState(true);
@@ -14,8 +14,9 @@ function App() {
     budget: '',
     comments: ''
   });
+
   useEffect(() => {
-    document.title = "MY BEST TOURS AND TRAVEL";
+    document.title = "MY BEST TOURS & TRAVEL";
     const link = document.createElement('link');
     link.rel = 'icon';
     link.href = 'https://cdn-icons-png.flaticon.com/512/5086/5086786.png';
@@ -41,7 +42,30 @@ function App() {
     }
   ];
 
-  const tourPackages = [
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => 
+        prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
+      );
+    }, 5000);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Form submitted:', formData);
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const localTours = [
     {
       title: "Kuala Lumpur City Explorer",
       image: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80",
@@ -80,52 +104,29 @@ function App() {
     }
   ];
 
-  const reviews = [
+  const internationalTours = [
     {
-      name: "Sarah Chen",
-      country: "Singapore",
-      rating: 5,
-      comment: "Amazing experience in Langkawi! The tour was well-organized and our guide was very knowledgeable.",
-      image: "https://images.unsplash.com/photo-1590077428593-a55bb07c4665?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
+      title: "Bangkok City Adventure",
+      image: "https://plus.unsplash.com/premium_photo-1664910039021-a1bfcc6574b9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      duration: "5 Days",
+      highlights: ["Grand Palace", "Wat Arun", "Floating Market", "Chatuchak Market"],
+      services: ["Visa", "Flights", "Hotels"]
     },
     {
-      name: "John Smith",
-      country: "Australia",
-      rating: 5,
-      comment: "The Borneo wildlife tour exceeded our expectations. Seeing orangutans in their natural habitat was unforgettable.",
-      image: "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
-    },
+      title: "Bali Beach Getaway",
+      image: "https://plus.unsplash.com/premium_photo-1682097623645-4fd444d9cecb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      duration: "6 Days",
+      highlights: ["Kuta Beach", "Ubud", "Tanah Lot", "Mount Batur"],
+      services: ["Visa", "Flights", "Hotels"]
+    }, 
     {
-      name: "Maria Garcia",
-      country: "Spain",
-      rating: 5,
-      comment: "Kuala Lumpur city tour was fantastic! Great mix of culture, history, and modern attractions.",
-      image: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?ixlib=rb-1.2.1&auto=format&fit=crop&w=200&q=80"
+      title: "Manila Cultural Experience",
+      image: "https://images.unsplash.com/photo-1579957023433-7fad5b83efae?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      duration: "4 Days",
+      highlights: ["Intramuros", "Rizal Park", "Manila Bay", "National Museum"],
+      services: ["Visa", "Flights", "Hotels"]
     }
   ];
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => 
-        prevIndex === heroImages.length - 1 ? 0 : prevIndex + 1
-      );
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Form submitted:', formData);
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -133,15 +134,21 @@ function App() {
       <nav className="fixed w-full bg-white/90 backdrop-blur-sm z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
-            <div className="flex items-center">
-              <PalmTree className="h-8 w-8 text-blue-600" />
-              <span className="ml-2 text-2xl font-bold text-blue-600">MY BEST TOURS AND TRAVEL</span>
+            <div className="flex items-center space-x-4">
+              <img src="logo.png" alt="Logo" className="h-10 w-10" />
+              <span className="text-2xl font-bold text-blue-600">MY BEST TOURS & TRAVEL</span>
             </div>
             <div className="hidden md:flex space-x-8">
               <a href="#home" className="text-gray-700 hover:text-blue-600">Home</a>
               <a href="#tours" className="text-gray-700 hover:text-blue-600">Tours</a>
-              <a href="#destinations" className="text-gray-700 hover:text-blue-600">Destinations</a>
               <a href="#about" className="text-gray-700 hover:text-blue-600">About</a>
+              <a href="#transportation" className="text-gray-700 hover:text-blue-600">Transportation</a>
+              <a href="#inquiry" className="text-gray-700 hover:text-blue-600">Contact</a>
+            </div>
+            <div className="flex md:hidden">
+              <a href="#tours" className="text-gray-700 hover:text-blue-600">Tours</a>
+              <a href="#about" className="text-gray-700 hover:text-blue-600">About</a>
+              <a href="#transportation" className="text-gray-700 hover:text-blue-600">Transportation</a>
               <a href="#inquiry" className="text-gray-700 hover:text-blue-600">Contact</a>
             </div>
           </div>
@@ -240,8 +247,10 @@ function App() {
       <section id="tours" className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-4xl font-bold text-center mb-12">Popular Tour Packages</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {tourPackages.map((tour, index) => (
+          
+          <h3 className="text-2xl font-semibold mb-6">Local Tours</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            {localTours.map((tour, index) => (
               <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
                 <img src={tour.image} alt={tour.title} className="w-full h-48 object-cover" />
                 <div className="p-6">
@@ -262,83 +271,82 @@ function App() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
 
-      {/* Destinations Section */}
-      <section id="destinations" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">Popular Destinations</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <div className="relative group overflow-hidden rounded-lg shadow-lg">
-              <img 
-                src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
-                alt="Kuala Lumpur" 
-                className="w-full h-64 object-cover group-hover:scale-110 transition duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                <div className="absolute bottom-0 p-6">
-                  <h3 className="text-xl font-semibold text-white">Kuala Lumpur</h3>
-                  <p className="text-white/80">Modern City & Cultural Hub</p>
+          <h3 className="text-2xl font-semibold mb-6">International Tours</h3>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {internationalTours.map((tour, index) => (
+              <div key={index} className="bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition duration-300">
+                <img src={tour.image} alt={tour.title} className="w-full h-48 object-cover" />
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold mb-2">{tour.title}</h3>
+                  <p className="text-gray-600 mb-4">{tour.duration}</p>
+                  <div className="space-y-2 mb-4">
+                    {tour.highlights.map((highlight, idx) => (
+                      <div key={idx} className="flex items-center text-sm text-gray-600">
+                        <Star className="h-4 w-4 text-orange-500 mr-2" />
+                        <span>{highlight}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="space-y-2 mb-4">
+                    <h4 className="text-lg font-semibold">Included Services:</h4>
+                    {tour.services.map((service, idx) => (
+                      <div key={idx} className="flex items-center text-sm text-gray-600">
+                        <Check className="h-4 w-4 text-green-500 mr-2" />
+                        <span>{service}</span>
+                      </div>
+                    ))}
+                  </div>
+                  <button className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-300">
+                    Learn More
+                  </button>
                 </div>
               </div>
-            </div>
-            <div className="relative group overflow-hidden rounded-lg shadow-lg">
-              <img 
-                src="https://images.unsplash.com/photo-1590077428593-a55bb07c4665?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
-                alt="Langkawi" 
-                className="w-full h-64 object-cover group-hover:scale-110 transition duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                <div className="absolute bottom-0 p-6">
-                  <h3 className="text-xl font-semibold text-white">Langkawi</h3>
-                  <p className="text-white/80">Island Paradise</p>
-                </div>
-              </div>
-            </div>
-            <div className="relative group overflow-hidden rounded-lg shadow-lg">
-              <img 
-                src="https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" 
-                alt="Borneo" 
-                className="w-full h-64 object-cover group-hover:scale-110 transition duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent">
-                <div className="absolute bottom-0 p-6">
-                  <h3 className="text-xl font-semibold text-white">Borneo</h3>
-                  <p className="text-white/80">Wildlife & Adventure</p>
-                </div>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Reviews Section */}
-      <section className="py-20 bg-white">
+      {/* Transportation Section */}
+      <section id="transportation" className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-12">What Our Customers Say</h2>
+          <h2 className="text-4xl font-bold text-center mb-12">Transportation</h2>
+          <p className="text-center text-gray-600 mb-8">
+            We offer a variety of transportation options to make your travel experience seamless and comfortable.
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {reviews.map((review, index) => (
-              <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
-                <div className="flex items-center mb-4">
-                  <img 
-                    src={review.image} 
-                    alt={review.name} 
-                    className="w-12 h-12 rounded-full object-cover mr-4"
-                  />
-                  <div>
-                    <h4 className="font-semibold">{review.name}</h4>
-                    <p className="text-gray-600 text-sm">{review.country}</p>
-                  </div>
-                </div>
-                <div className="flex mb-2">
-                  {[...Array(review.rating)].map((_, i) => (
-                    <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
-                  ))}
-                </div>
-                <p className="text-gray-600">{review.comment}</p>
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold mb-4">Airport Transfers</h3>
+              <p className="text-gray-600">Convenient and reliable airport transfers to and from your destination.</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold mb-4">Private Car Rentals</h3>
+              <p className="text-gray-600">Explore at your own pace with our private car rental services.</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold mb-4">Group Transportation</h3>
+              <p className="text-gray-600">Comfortable and affordable transportation for groups of all sizes.</p>
+            </div>
+          </div>
+          <div className="mt-12">
+            <h3 className="text-2xl font-semibold mb-6">Our Fleet</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <img src="https://images.unsplash.com/photo-1616455579100-2ceaa4eb2d37?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Sedan" className="w-full h-48 object-cover mb-4 rounded-lg" />
+                <h4 className="text-xl font-semibold mb-2">Sedan</h4>
+                <p className="text-gray-600">Comfortable for up to 4 passengers.</p>
               </div>
-            ))}
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <img src="https://images.unsplash.com/photo-1606611013016-969c19ba27bb?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="SUV" className="w-full h-48 object-cover mb-4 rounded-lg" />
+                <h4 className="text-xl font-semibold mb-2">SUV</h4>
+                <p className="text-gray-600">Spacious and comfortable for up to 6 passengers.</p>
+              </div>
+              <div className="bg-white p-6 rounded-lg shadow-lg">
+                <img src="https://images.unsplash.com/photo-1535655685871-dc8158ff167e?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Van" className="w-full h-48 object-cover mb-4 rounded-lg" />
+                <h4 className="text-xl font-semibold mb-2">Van</h4>
+                <p className="text-gray-600">Ideal for groups of up to 12 passengers.</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -462,7 +470,7 @@ function App() {
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 bg-green-500 text-white p-4 rounded-full shadow-lg hover:bg-green-600 transition duration-300 z-50"
       >
-        <img src="https://cdn0.iconfinder.com/data/icons/social-network-flat-4/512/whatsapp_icon-512.png" alt="WhatsApp" className="h-6 w-6" />
+        <WhatsappIcon className="h-6 w-6" />
       </a>
 
       {/* Cookie Consent */}
@@ -525,8 +533,7 @@ function App() {
               <ul className="space-y-2">
                 <li><a href="#about" className="hover:text-blue-400">About Us</a></li>
                 <li><a href="#tours" className="hover:text-blue-400">Tours</a></li>
-                <li><a href="#destinations" className="hover:text-blue-400">Destinations</a></li>
-                <li><a href="#contact" className="hover:text-blue-400">Contact</a></li>
+                <li><a href="#inquiry" className="hover:text-blue-400">Contact</a></li>
               </ul>
             </div>
             <div>
