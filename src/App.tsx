@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { Menu, X } from 'lucide-react';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import { Palmtree as PalmTree, Phone, Mail, MapPin, Facebook, Instagram, Twitter, Star, Users, Calendar, Clock, Check } from 'lucide-react';
 import * as logo from '/assets/logo.png';
+import TourDetailPage from './pages/TourDetailPage'; // Import the TourDetailPage component
+
 
 function App() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showCookieConsent, setShowCookieConsent] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [formData, setFormData] = useState({
@@ -142,15 +147,23 @@ function App() {
     return () => clearInterval(tourImageTimer);
   }, [tourImageUrls.length]);
     return (
-    <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="fixed w-full bg-white/90 backdrop-blur-sm z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center space-x-4">
-              <img src={img} alt="Logo" className="h-10 w-10" />
-              <span className="text-2xl font-bold text-blue-600">MY BEST TOURS & TRAVEL</span>
+              <img 
+                src={img}
+                alt="Logo" 
+                className="h-8 w-8 md:h-10 md:w-10 rounded-full" 
+              />
+              <span className="text-lg md:text-2xl font-bold text-blue-600 truncate">
+                MY BEST TOURS & TRAVEL
+              </span>
             </div>
+            
+            {/* Desktop Menu */}
             <div className="hidden md:flex space-x-8">
               <a href="#home" className="text-gray-700 hover:text-blue-600">Home</a>
               <a href="#tours" className="text-gray-700 hover:text-blue-600">Tours</a>
@@ -158,13 +171,64 @@ function App() {
               <a href="#transportation" className="text-gray-700 hover:text-blue-600">Transportation</a>
               <a href="#inquiry" className="text-gray-700 hover:text-blue-600">Contact</a>
             </div>
-            <div className="flex md:hidden">
-              <a href="#tours" className="text-gray-700 hover:text-blue-600">Tours</a>
-              <a href="#about" className="text-gray-700 hover:text-blue-600">About</a>
-              <a href="#transportation" className="text-gray-700 hover:text-blue-600">Transportation</a>
-              <a href="#inquiry" className="text-gray-700 hover:text-blue-600">Contact</a>
+
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="p-2 rounded-md text-gray-700 hover:text-blue-600 focus:outline-none"
+              >
+                {isMenuOpen ? (
+                  <X className="h-6 w-6" />
+                ) : (
+                  <Menu className="h-6 w-6" />
+                )}
+              </button>
             </div>
           </div>
+
+          {/* Mobile Menu */}
+          {isMenuOpen && (
+            <div className="md:hidden">
+              <div className="px-2 pt-2 pb-3 space-y-1 bg-white border-t">
+                <a
+                  href="#home"
+                  className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Home
+                </a>
+                <a
+                  href="#tours"
+                  className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Tours
+                </a>
+                <a
+                  href="#about"
+                  className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  About
+                </a>
+                <a
+                  href="#transportation"
+                  className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Transportation
+                </a>
+                <a
+                  href="#inquiry"
+                  className="block px-3 py-2 text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50 rounded-md"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Contact
+                </a>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
