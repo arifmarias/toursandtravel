@@ -211,7 +211,7 @@ function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <div>
               <img 
-                src="https://images.unsplash.com/photo-1549154425-7b519f2b92d4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" 
+                src={img} 
                 alt="About Us" 
                 className="rounded-lg shadow-lg"
               />
@@ -525,7 +525,7 @@ function App() {
                 </p>
                 <p className="flex items-center">
                   <Mail className="h-5 w-5 mr-2" />
-                  admin@example.com
+                  sales@besttoursandtravel.com.my
                 </p>
                 <p className="flex items-center">
                   <MapPin className="h-5 w-5 mr-2" />
@@ -557,7 +557,7 @@ function App() {
             </div>
           </div>
           <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>&copy; 2025 MY BEST TOURS AND TRAVEL. All rights reserved.</p>
+            <p>&copy; 2025 MY BEST TOURS & TRAVEL. All rights reserved.</p>
           </div>
         </div>
       </footer>
