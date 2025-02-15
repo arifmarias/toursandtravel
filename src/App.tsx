@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Palmtree as PalmTree, Phone, Mail, MapPin, Facebook, Instagram, Twitter, MapIcon as WhatsappIcon, Star, Users, Calendar, Clock, Check } from 'lucide-react';
-
+import * as logo from '/assets/logo.png';
 function App() {
   const [showCookieConsent, setShowCookieConsent] = useState(true);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -14,6 +14,7 @@ function App() {
     budget: '',
     comments: ''
   });
+  const img = logo.default;
 
   useEffect(() => {
     document.title = "MY BEST TOURS & TRAVEL";
@@ -135,7 +136,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center space-x-4">
-              <img src="logo.png" alt="Logo" className="h-10 w-10" />
+              <img src={img} alt="Logo" className="h-10 w-10" />
               <span className="text-2xl font-bold text-blue-600">MY BEST TOURS & TRAVEL</span>
             </div>
             <div className="hidden md:flex space-x-8">
