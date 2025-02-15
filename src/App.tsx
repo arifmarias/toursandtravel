@@ -5,7 +5,6 @@ import { Palmtree as PalmTree, Phone, Mail, MapPin, Facebook, Instagram, Twitter
 import * as logo from '/assets/logo.png';
 import TourDetailPage from './pages/TourDetailPage';
 import AnimatedCounter from './components/AnimatedCounter';
-import { Analytics } from '@vercel/analytics/next';
 
 
 function App() {
