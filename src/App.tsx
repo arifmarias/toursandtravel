@@ -626,12 +626,12 @@ function App() {
       </button>
 
       {/* Progress Indicator */}
-      <div className="absolute bottom-6 right-6 bg-black/60 px-4 py-2 rounded-full text-white font-semibold text-lg">
+      {/* <div className="absolute bottom-6 right-6 bg-black/60 px-4 py-2 rounded-full text-white font-semibold text-lg">
         {currentTourImageIndex + 1} / {tourImageUrls.length}
-      </div>
+      </div> */}
 
       {/* Image Dots Navigation */}
-      <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
+      {/* <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
         {tourImageUrls.map((_, index) => (
           <button
             key={index}
@@ -644,7 +644,7 @@ function App() {
             aria-label={`Go to image ${index + 1}`}
           />
         ))}
-      </div>
+      </div> */}
     </div>
   </div>
 </section>
